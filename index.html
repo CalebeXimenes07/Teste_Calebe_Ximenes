@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Análise API ANS</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            margin: 30px; 
+            background-color: #ffffff; 
+            color: #222;
+        }
+
+        h1 { border-bottom: 2px solid #444; padding-bottom: 10px; }
+
+        /* Cards sem firula */
+        .card-container { 
+            display: flex; 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .card { 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            flex: 1; 
+            background: #fdfdfd;
+        }
+
+        /* Tabela padrão de sistema */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+        }
+        th, td { 
+            border: 1px solid #ccc; 
+            padding: 8px; 
+            text-align: left; 
+        }
+        th {background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #fafafa;}
+
+        .pagination { 
+            margin-top: 20px; 
+        }
+        button { 
+            padding: 5px 15px; 
+            cursor: pointer;
+            background: #eee;
+            border: 1px solid #999;
+        }
+        button:hover {background: #ddd;}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Análise de Despesas ANS</h1>
+
+        <div class="card-container">
+            <div v-for="s in stats.slice(0,3)" class="card">
+                <strong>{{ s.RazaoSocial }}</strong><br>
+                <span>Total: R$ {{ Number(s.Total_Despesas).toLocaleString('pt-BR') }}</span><br>
+                <small>UF: {{ s.UF }}</small>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>CNPJ</th>
+                    <th>Razão Social</th>
+                    <th>UF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="op in operadoras">
+                    <td>{{ op.CNPJ }}</td>
+                    <td>{{ op.RazaoSocial }}</td>
+                    <td>{{ op.UF }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button @click="changePage(-1)" :disabled="page === 1">Anterior</button>
+            <span style="margin: 0 10px">Página: {{ page }}</span>
+            <button @click="changePage(1)">Próxima</button>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data() { 
+                return { 
+                    operadoras: [], 
+                    stats: [], 
+                    page: 1 
+                } 
+            },
+            methods: {
+                async load() {
+                    const res = await axios.get(`http://localhost:5000/api/operadoras?page=${this.page}`);
+                    this.operadoras = res.data.data;
+                },
+                async loadStats() {
+                    const res = await axios.get('http://localhost:5000/api/estatisticas');
+                    this.stats = res.data;
+                },
+                changePage(dir) { 
+                    this.page += dir; 
+                    this.load(); 
+                }
+            },
+            mounted() { 
+                this.load(); 
+                this.loadStats(); 
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

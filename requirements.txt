@@ -1,0 +1,10 @@
+
+pandas
+requests
+lxml
+openpyxl
+sqlalchemy
+mysql-connector-python
+cryptography
+flask
+flask-cors

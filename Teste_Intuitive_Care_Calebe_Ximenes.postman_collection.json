@@ -1,0 +1,43 @@
+{
+  "info": {
+    "_postman_id": "1f5a92b4-696c-491b-9992-6e555fd6a7a3",
+    "name": "Teste_Intuitive_Care_Calebe_Ximenes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50289662",
+    "_collection_link": "https://go.postman.co/collection/50289662-1f5a92b4-696c-491b-9992-6e555fd6a7a3?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Listar Operadoras",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Detalhes da Operadora",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Histórico de Despesas Operadora",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Estatísticas e Top 5",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}

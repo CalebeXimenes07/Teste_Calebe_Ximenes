@@ -1,0 +1,25 @@
+services:
+  db_ans:
+    image: mysql:8.0
+    container_name: mysql_ans
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'ans_contabil_intuitivecare'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3307:3306'
+    networks:
+      - intuitive_network
+
+  adminer:
+    image: adminer
+    container_name: adminer_ans
+    restart: always
+    ports:
+      - '8080:8080'
+    networks:
+      - intuitive_network
+
+networks:
+  intuitive_network:
+    driver: bridge
