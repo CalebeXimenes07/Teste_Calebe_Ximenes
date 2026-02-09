@@ -1,6 +1,4 @@
-# Teste Técnico - Análise de Dados ETL
-
-Este repositório contém a resolução do teste técnico para a vaga de estágio na Intuitive Care. O projeto foca no processamento de demonstrações contábeis de operadoras de saúde (ANS) utilizando Python, Docker e MySQL, além da disponibilização dos dados via API REST e Interface Web.
+# Teste Back-end - Análise de Dados ETL
 
 ## Como Executar o Projeto
 
@@ -57,7 +55,7 @@ Conforme solicitado no manual, abaixo estão as justificativas para as escolhas 
 * **main.py:** Script de ETL (Download, Transformação e Carga).
 * **api.py:** Servidor Flask com as rotas de API solicitadas.
 * **index.html:** Interface web desenvolvida em Vue.js.
-* **Intuitive_Care_Postman.json:** Coleção com exemplos de requisições e respostas.
+* **Teste_Calebe_Ximenes.postman_collection.json:** Coleção com exemplos de requisições e respostas.
 * **docker-compose.yml:** Configuração da infraestrutura.
 * **requirements.txt:** Dependências do projeto.
 
