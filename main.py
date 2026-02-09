@@ -1,5 +1,5 @@
 """
-Script de ETL - Teste Técnico Estágio Intuitive Care
+Script de ETL - Projeto de Análise de Dados ANS
 Autor: Calebe Ximenes
 Objetivo: Extrair, transformar e carregar dados contábeis da API  ANS.
 
