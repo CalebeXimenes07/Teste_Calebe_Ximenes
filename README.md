@@ -1,4 +1,4 @@
-# Teste Técnico - Intuitive Care (Estagiário de Dados/Backend)
+# Teste Técnico - Análise de Dados ETL
 
 Este repositório contém a resolução do teste técnico para a vaga de estágio na Intuitive Care. O projeto foca no processamento de demonstrações contábeis de operadoras de saúde (ANS) utilizando Python, Docker e MySQL, além da disponibilização dos dados via API REST e Interface Web.
 
