@@ -15,7 +15,7 @@ O pipeline realiza a extração automática (ETL), tratamento de inconsistência
 Clone este repositório para sua máquina local:
 
 ```bash
-git clone [https://github.com/CalebeXimenes07/Teste_Calebe_Ximenes].git
+git clone https://github.com/CalebeXimenes07/Teste_Calebe_Ximenes.git
 cd Teste_Calebe_Ximenes
 ```
 
