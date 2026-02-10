@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def test_db_content():
-    engine = create_engine("mysql+mysqlconnector://root:root@localhost:3307/ans_contabil_intuitivecare")
+    engine = create_engine("mysql+mysqlconnector://root:root@localhost:3307/ans_contabil")
     
     print("Iniciando teste de integridade...")
     try:
