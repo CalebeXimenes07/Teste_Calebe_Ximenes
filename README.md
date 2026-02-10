@@ -14,35 +14,42 @@ O pipeline realiza a extração automática (ETL), tratamento de inconsistência
 ### Instalação
 Clone este repositório para sua máquina local:
 
-git clone https://github.com/CalebeXimenes07/Teste_Calebe_Ximenes.git
-
-cd Teste_Calebe_Ximenes
+```bash
+git clone [https://github.com/](https://github.com/)[SEU-USUARIO]/[NOME-DO-REPO].git
+cd [NOME-DO-REPO]
+```
 
 ### Passo a Passo
 
-1. Subir a Infraestrutura:
-   No terminal, dentro da pasta do projeto, execute:
+1. **Subir a Infraestrutura**
+   No terminal, dentro da pasta do projeto, execute o comando abaixo. Isso subirá o banco de dados MySQL 8.0 e a interface de gerenciamento Adminer.
+   ```bash
    docker-compose up -d
+   ```
 
-   Isso subirá o banco de dados MySQL 8.0 e a interface de gerenciamento Adminer.
-
-2. Instalar Dependências:
+2. **Instalar Dependências**
+   Instale as bibliotecas Python necessárias listadas no requirements.txt:
+   ```bash
    pip install -r requirements.txt
+   ```
 
-3. Executar o Processamento (ETL):
+3. **Executar o Processamento (ETL)**
+   Execute o script principal. Ele baixará os dados brutos, tratará as inconsistências e carregará as informações limpas no banco de dados.
+   ```bash
    python main.py
+   ```
 
-   Este script baixará os dados brutos, tratará as inconsistências e carregará as informações limpas no banco de dados.
-
-4. Executar a API:
+4. **Executar a API**
+   Inicie o servidor Flask:
+   ```bash
    python api.py
+   ```
+   O servidor iniciará em http://localhost:5000.
 
-   O servidor Flask iniciará em http://localhost:5000.
+5. **Visualizar a Interface**
+   Abra o arquivo `index.html` diretamente em seu navegador para interagir com o Dashboard.
 
-5. Visualizar a Interface:
-   Abra o arquivo index.html diretamente em seu navegador para interagir com o Dashboard.
-
-6. Visualizar o Banco (Opcional):
+6. **Visualizar o Banco (Opcional)**
    Acesse http://localhost:8080 (Adminer) com as seguintes credenciais:
    * Servidor: mysql_ans
    * Usuário: root
