@@ -190,7 +190,7 @@ if DADOS_CADASTRAIS_ANS.status_code == 200:
     df_estatisticas_agregadas.to_csv(caminho_nome_agregado, index=False, sep=';', encoding='utf-8')
 
 # A porta escolhida foi a 3307 para evitar conflito caso tenha algum banco internamente instalado
-engine = create_engine('mysql+pymysql://root:root@localhost:3307/ans_contabil_intuitivecare')
+engine = create_engine('mysql+pymysql://root:root@localhost:3307/ans_contabil')
 
 dtype_mapa_agregado = {
     'CNPJ': types.CHAR(length=14), 
