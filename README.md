@@ -1,62 +1,90 @@
-# Teste Back-end - Análise de Dados ETL
+# Projeto de Análise de Dados ANS (ETL + Docker)
+
+Este projeto consiste em uma solução completa de Engenharia de Dados e Backend para processamento, análise e visualização de dados contábeis públicos da ANS (Agência Nacional de Saúde Suplementar).
+
+O pipeline realiza a extração automática (ETL), tratamento de inconsistências financeiras e disponibilização dos dados via API REST e Dashboard Interativo, tudo orquestrado via Docker para garantir reprodutibilidade.
 
 ## Como Executar o Projeto
 
 ### Pré-requisitos
 * Docker e Docker Compose instalados.
 * Python 3.10 ou superior.
+* Git.
+
+### Instalação
+Clone este repositório para sua máquina local:
+
+git clone https://github.com/CalebeXimenes07/Teste_Calebe_Ximenes.git
+cd Teste_Calebe_Ximenes
 
 ### Passo a Passo
-1. **Subir a Infraestrutura:** No terminal, dentro da pasta do projeto, execute: `docker-compose up -d`. Isso subirá o banco de dados MySQL 8.0 e a interface Adminer.
-2. **Instalar Dependências:** Execute o comando: `pip install -r requirements.txt`.
-3. **Executar o Processamento (ETL):** Execute: `python main.py`. Este script baixará, tratará e carregará os dados no banco.
-4. **Executar a API:** Execute: `python api.py`. O servidor Flask iniciará em `http://localhost:5000`.
-5. **Visualizar a Interface:** Abra o arquivo `index.html` diretamente em seu navegador.
-6. **Visualizar o Banco (Opcional):** Acesse `http://localhost:8080` (Adminer) com as seguintes credenciais:
-   - **Servidor:** mysql_ans | **Usuário:** root | **Senha:** root | **Porta Interna:** 3306 (Porta Externa: 3307)
 
-## Decisões Técnicas e Trade-offs
+1. Subir a Infraestrutura:
+   No terminal, dentro da pasta do projeto, execute:
+   docker-compose up -d
 
-Conforme solicitado no manual, abaixo estão as justificativas para as escolhas feitas durante o desenvolvimento:
+   Isso subirá o banco de dados MySQL 8.0 e a interface de gerenciamento Adminer.
 
-### 1. Módulo 1 e 2: Web Scraping e Processamento
-* **Trade-off:** Processamento em Memória x Escrita em Disco.
-* **Decisão:** Optei por carregar e consolidar os dados em memória com a biblioteca Pandas.
-* **Justificativa:** Como o volume de dados das demonstrações contábeis é significativo, o Pandas oferece uma manipulação de strings e conversão de tipos muito mais eficiente do que iterações manuais em arquivos CSV, garantindo a performance exigida.
+2. Instalar Dependências:
+   pip install -r requirements.txt
 
-### 2. Tratamento de Inconsistências (Pensamento Crítico)
-* **Filtragem de Dados:** O script filtra automaticamente as contas de Despesas com Eventos e Sinistros e remove linhas com valores negativos ou campos obrigatórios ausentes.
-* **Justificativa:** Dados contábeis brutos apresentam ruídos. A limpeza prévia garante que as estatísticas reflitam a realidade financeira sem distorções por erros de preenchimento.
+3. Executar o Processamento (ETL):
+   python main.py
 
-### 3. Módulo 3: Infraestrutura com Docker
-* **Trade-off:** Instalação Local vs. Conteinerização.
-* **Decisão:** Uso de Docker Compose para orquestrar o MySQL 8.0 e o Adminer.
-* **Justificativa:** Garante a portabilidade. Mapeei a porta externa para 3307 para evitar conflitos com serviços locais de banco de dados no host do avaliador.
+   Este script baixará os dados brutos, tratará as inconsistências e carregará as informações limpas no banco de dados.
 
-### 4. Módulo 4: API e Interface Web (Backend e Frontend)
+4. Executar a API:
+   python api.py
 
-**Backend:**
-* **4.2.1. Escolha do Framework:** Opção A (Flask). Justificativa: Escolhido por sua natureza minimalista e agilidade no setup de APIs RESTful, cumprindo os requisitos de praticidade e fácil manutenção sem o overhead de frameworks mais pesados.
-* **4.2.2. Estratégia de Paginação:** Opção A (Offset-based). Justificativa: Considerando que os dados da ANS são históricos e estáveis, a paginação via LIMIT e OFFSET é eficiente e simplifica a implementação tanto no banco quanto no frontend.
-* **4.2.3. Cache vs Queries Diretas:** Opção C (Pré-calcular e armazenar em tabela). Justificativa: Os cálculos de despesas são realizados durante o ETL e armazenados na tabela estatisticas_operadoras. Isso elimina o custo computacional de agregados em tempo real na rota /api/estatisticas.
-* **4.2.4. Estrutura de Resposta:** Opção B (Dados + metadados). Justificativa: Retornar o total de registros e a página atual permite que o frontend gerencie os componentes de navegação de forma precisa.
+   O servidor Flask iniciará em http://localhost:5000.
 
-**Frontend:**
-* **4.3.1. Estratégia de Busca/Filtro:** Opção A (Busca no servidor). Justificativa: Garante que o processamento de grandes volumes de dados ocorra no banco de dados, evitando gargalos de memória e performance no navegador do usuário.
-* **4.3.2. Gerenciamento de Estado:** Opção A (Props/Events simples). Justificativa: Dada a baixa complexidade de compartilhamento de dados entre componentes neste projeto, o uso de ferramentas como Pinia ou Vuex seria desnecessário.
-* **4.3.3. Performance da Tabela:** Paginação Simples. Justificativa: A renderização de um número controlado de linhas por vez garante uma UX fluida e evita lentidão no processamento do DOM.
-* **4.3.4. Tratamento de Erros e Loading:** Implementação de try/catch no Axios e estados reativos de carregamento. Optei por mensagens de erro específicas para facilitar o diagnóstico de falhas de conexão ou dados inexistentes.
+5. Visualizar a Interface:
+   Abra o arquivo index.html diretamente em seu navegador para interagir com o Dashboard.
+
+6. Visualizar o Banco (Opcional):
+   Acesse http://localhost:8080 (Adminer) com as seguintes credenciais:
+   * Servidor: mysql_ans
+   * Usuário: root
+   * Senha: root
+   * Porta Interna: 3306 (Porta Externa: 3307)
+
+---
+
+## Decisões Técnicas e Arquitetura
+
+Abaixo estão as justificativas para as escolhas técnicas adotadas durante o desenvolvimento visando performance, escalabilidade e governança de dados.
+
+### 1. Processamento e Web Scraping
+* Decisão: Processamento em memória com Pandas.
+* Justificativa: Dado o volume significativo das demonstrações contábeis, o Pandas oferece vetorialização eficiente para limpeza de strings e conversão de tipos, superando a performance de iterações manuais em arquivos CSV.
+
+### 2. Qualidade de Dados (Data Quality)
+* Decisão: Filtragem automática na camada de ETL.
+* Justificativa: O script remove automaticamente linhas com valores negativos inválidos ou campos obrigatórios ausentes. Isso garante que as estatísticas reflitam a realidade financeira sem distorções (Saneamento na origem).
+
+### 3. Infraestrutura como Código
+* Decisão: Orquestração via Docker Compose.
+* Justificativa: Garante a imutabilidade do ambiente. O uso de containers elimina o problema de "funciona na minha máquina", padronizando a versão do banco de dados (MySQL 8.0) independente do sistema operacional do host. A porta 3307 foi mapeada para evitar conflitos locais.
+
+### 4. API e Backend
+* Framework: Flask. Escolhido pela arquitetura minimalista e baixo overhead para microsserviços.
+* Estratégia de Performance: Pré-cálculo. Os dados agregados (somas e médias por operadora) são processados durante o ETL e persistidos na tabela estatisticas_operadoras. A API apenas lê o resultado pronto, reduzindo a latência da resposta para o frontend.
+* Paginação: Offset-based, ideal para dados históricos e estáveis.
 
 ### 5. Tipagem no Banco de Dados
-* **Uso de DECIMAL(20,2):**
-* **Justificativa:** Para campos financeiros, o uso de FLOAT é inadequado. O tipo DECIMAL garante a precisão exata para os centavos em cálculos contábeis de larga escala.
+* Decisão: Uso de DECIMAL(20,2) para valores monetários.
+* Justificativa: O tipo FLOAT pode introduzir erros de arredondamento em somas financeiras grandes. O DECIMAL garante a precisão exata dos centavos exigida em sistemas contábeis/bancários.
+
+---
 
 ## Estrutura do Projeto
-* **main.py:** Script de ETL (Download, Transformação e Carga).
-* **api.py:** Servidor Flask com as rotas de API solicitadas.
-* **index.html:** Interface web desenvolvida em Vue.js.
-* **Teste_Calebe_Ximenes.postman_collection.json:** Coleção com exemplos de requisições e respostas.
-* **docker-compose.yml:** Configuração da infraestrutura.
-* **requirements.txt:** Dependências do projeto.
 
+* main.py: Script principal de ETL (Extração, Transformação e Carga).
+* api.py: Servidor Flask com endpoints RESTful.
+* index.html: Interface web desenvolvida em Vue.js (Consumo da API).
+* ans_api_collection.json: Coleção do Postman para testes de integração.
+* docker-compose.yml: Definição da infraestrutura.
+* requirements.txt: Lista de dependências do Python.
+
+---
 Desenvolvido por: Calebe Ximenes
