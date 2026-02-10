@@ -6,7 +6,7 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
-engine = create_engine('mysql+pymysql://root:root@localhost:3307/ans_contabil_intuitivecare')
+engine = create_engine('mysql+pymysql://root:root@localhost:3307/ans_contabil')
 
 @app.route('/api/operadoras', methods=['GET'])
 def list_operadoras():
